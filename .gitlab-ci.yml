@@ -1,0 +1,26 @@
+variables:
+  LC_ALL: "C.UTF-8"
+  LANG: "en_US.UTF-8"
+  LANGUAGE: "en_US.UTF-8"
+  MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
+  
+stages:
+  - build-test
+  - deploy
+
+image: fmorgner/cevelop-plugin-build:latest
+
+before_script:
+  - cd SubprojectorProject
+
+build-test:
+  stage: build-test
+  cache:
+    key: "SubprojectorMavenCache"
+    paths:
+      - ./SubprojectorProject/.m2/repository
+  script:
+    - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
+  artifacts:
+    paths:
+      - ./SubprojectorProject/releng/ch.stautob.eclipse.subprojector.update/target/repository/**

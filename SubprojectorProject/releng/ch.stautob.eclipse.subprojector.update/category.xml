@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/ch.stautob.eclipse.subprojector.feature_1.0.0.qualifier.jar" id="ch.stautob.eclipse.subprojector.feature" version="1.0.0.qualifier">
+      <category name="ch.stautob.eclipse.subprojector"/>
+   </feature>
+   <category-def name="ch.stautob.eclipse.subprojector" label="Subprojector">
+      <description>
+         Allows to open/close projects recursively.
+      </description>
+   </category-def>
+</site>

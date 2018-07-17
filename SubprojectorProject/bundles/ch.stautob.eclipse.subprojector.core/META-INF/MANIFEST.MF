@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Subprojector
+Bundle-SymbolicName: ch.stautob.eclipse.subprojector.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: ch.stautob.eclipse.subprojector
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.commands,
+ org.eclipse.ui.workbench,
+ org.eclipse.core.resources;bundle-version="3.12.0",
+ org.eclipse.jface,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions;bundle-version="3.6.0"

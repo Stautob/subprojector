@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <!-- Menu commands definition -->
+
+    <extension
+          name="MenuCommands"
+          point="org.eclipse.ui.commands">
+        <category
+        	name="Actions"
+        	id="ch.stautob.eclipse.subprojector.commands.actions">
+      	</category>
+      	<command
+        	name="Open/Close Recursively"
+        	categoryId="ch.stautob.eclipse.subprojector.commands.actions"
+        	id="ch.stautob.eclipse.subprojector.commands.actions.openCloseRecursive">
+          <commandParameter
+                id="ch.stautob.eclipse.subprojector.commands.openCloseRecorsive.param"
+                name="operation"
+                optional="false">
+          </commandParameter>
+      	</command>
+    </extension>
+ 
+    <extension
+          name="Handlers"
+          point="org.eclipse.ui.handlers">
+      	<handler
+        	commandId="ch.stautob.eclipse.subprojector.commands.actions.openCloseRecursive"
+        	class="ch.stautob.eclipse.subprojector.handlers.OpenCloseRecursiveHandler">
+        </handler>
+    </extension>
+    
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+	   		class="ch.stautob.eclipse.subprojector.handlers.TestAllOpenAllClosedRecursive"
+	   		id="ch.stautob.eclipse.subprojector.testOpenRecursive"
+	        namespace="ch.stautob.eclipse.subprojector"
+	        properties="allOpen, allClosed"
+	        type="org.eclipse.core.resources.IProject">
+	    </propertyTester>
+	</extension>
+ 
+   <!-- Menu entry defintion -->
+  
+    <extension
+          point="org.eclipse.ui.menus">
+      	<menuContribution
+        	locationURI="popup:org.eclipse.ui.popup.any?before=buildGroup">
+            <command
+            	commandId="ch.stautob.eclipse.subprojector.commands.actions.openCloseRecursive"
+            	id="ch.stautob.eclipse.subprojector.menuContributions.commands.actions.openRecursive"
+            	label="Open Project Recursively"
+           		style="push"
+            	tooltip="Opens this and all nested projects">
+				<visibleWhen checkEnabled="true">
+         			<with variable="activeMenuSelection">
+		         		<iterate ifEmpty="false">
+		         			<and>
+		         				<adapt type="org.eclipse.core.resources.IResource">
+		         					<instanceof value="org.eclipse.core.resources.IProject"/>
+		         				</adapt>
+		         				<adapt type="org.eclipse.core.resources.IProject">
+			               			<test
+			                  			property="ch.stautob.eclipse.subprojector.allOpen"
+			                  			value="false"
+      									forcePluginActivation="true">
+			               			</test>
+		               			</adapt>
+		         			</and>	
+	         			</iterate>
+	         		</with>
+	         	</visibleWhen>
+			    <parameter
+			          name="ch.stautob.eclipse.subprojector.commands.openCloseRecorsive.param"
+			          value="open">
+			    </parameter>
+            </command>
+          	<command
+            	commandId="ch.stautob.eclipse.subprojector.commands.actions.openCloseRecursive"
+            	id="ch.stautob.eclipse.subprojector.menuContributions.commands.actions.closeRecursive"
+            	label="Close Project Recursively"
+           		style="push"
+            	tooltip="Closes this and all nested projects">
+				<visibleWhen checkEnabled="true">
+         			<with variable="activeMenuSelection">
+	         			<iterate ifEmpty="false">
+		         			<and>
+		         				<adapt type="org.eclipse.core.resources.IResource">
+		         					<instanceof value="org.eclipse.core.resources.IProject"/>
+		         				</adapt>
+		         				<adapt type="org.eclipse.core.resources.IProject">
+			               			<test
+			                  			property="ch.stautob.eclipse.subprojector.allClosed"
+			                  			value="false"
+      									forcePluginActivation="true">
+			               			</test>
+		               			</adapt>
+		         			</and>	
+	         			</iterate>
+	         		</with>
+	         	</visibleWhen>
+			    <parameter
+			          name="ch.stautob.eclipse.subprojector.commands.openCloseRecorsive.param"
+			          value="close">
+			    </parameter>
+            </command>
+      	</menuContribution>
+    </extension>
+    
+</plugin>
