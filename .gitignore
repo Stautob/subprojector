@@ -1,0 +1,7 @@
+**/target/
+**/bin/
+
+**/images/
+
+.DS_STORE
+.DS_Store
