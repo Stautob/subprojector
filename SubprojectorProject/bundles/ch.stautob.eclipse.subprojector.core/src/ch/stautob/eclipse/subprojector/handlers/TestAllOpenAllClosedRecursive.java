@@ -19,12 +19,12 @@ public class TestAllOpenAllClosedRecursive extends org.eclipse.core.expressions.
    }
 
    private boolean testAllClosed(IProject project) {
-      if (!project.isOpen()) return ProjectUtil.getNestedProjects(project).stream().noneMatch(IProject::isOpen);
+      if (!project.isOpen()) return ProjectUtil.getNestedProjectsExclusive(project).stream().noneMatch(IProject::isOpen);
       return false;
    }
 
    private boolean testAllOpen(IProject project) {
-      if (project.isOpen()) return ProjectUtil.getNestedProjects(project).stream().allMatch(IProject::isOpen);
+      if (project.isOpen()) return ProjectUtil.getNestedProjectsExclusive(project).stream().allMatch(IProject::isOpen);
       return false;
    }
 }

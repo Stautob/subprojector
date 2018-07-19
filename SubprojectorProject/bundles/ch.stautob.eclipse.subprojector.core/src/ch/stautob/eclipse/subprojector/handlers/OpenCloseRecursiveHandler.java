@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -95,16 +96,12 @@ public class OpenCloseRecursiveHandler extends AbstractHandler {
       return selectedProjects;
    }
 
-   private void executeActionOnProjectRecursive(Collection<IProject> selectedProjects, IProgressMonitor monitor, BiConsumer<IProject, IProgressMonitor> action) {
-      SubMonitor outerSubmonitor = SubMonitor.convert(monitor, selectedProjects.size());
-      for (IProject proj : selectedProjects) {
-         Set<IProject> nestedProjects = ProjectUtil.getNestedProjects(proj);
-         SubMonitor innerSubmonitor = outerSubmonitor.split(1).setWorkRemaining(nestedProjects.size() + 1);
-         for (IProject nestedProj : nestedProjects) {
-            action.accept(nestedProj, innerSubmonitor.split(1));
-         }
-         action.accept(proj, innerSubmonitor.split(1));
-      }
+   private void executeActionOnProjectRecursive(Collection<IProject> selectedProjects, IProgressMonitor monitor,
+         BiConsumer<IProject, IProgressMonitor> action) {
+      Set<IProject> allNestedProjects = selectedProjects.stream().flatMap(p -> ProjectUtil.getNestedProjects(p).stream()).collect(Collectors.toSet());
+      SubMonitor outerSubmonitor = SubMonitor.convert(monitor, selectedProjects.size() + allNestedProjects.size());
+      outerSubmonitor.worked(selectedProjects.size());
+      allNestedProjects.forEach(p -> action.accept(p, outerSubmonitor.newChild(1)));
    }
 
 }
