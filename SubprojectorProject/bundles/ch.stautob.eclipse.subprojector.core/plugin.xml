@@ -47,7 +47,7 @@
     <extension
           point="org.eclipse.ui.menus">
       	<menuContribution
-        	locationURI="popup:org.eclipse.ui.popup.any?before=buildGroup">
+        	locationURI="popup:org.eclipse.ui.popup.any?before=additions">
             <command
             	commandId="ch.stautob.eclipse.subprojector.commands.actions.openCloseRecursive"
             	id="ch.stautob.eclipse.subprojector.menuContributions.commands.actions.openRecursive"
